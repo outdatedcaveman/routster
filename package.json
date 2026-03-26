@@ -1,0 +1,57 @@
+{
+  "name": "rootster",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:frontend": "cd frontend && npm install && npm run build",
+    "postinstall": "cd frontend && npm install",
+    "build:exe": "npm run build:frontend && electron-builder --win"
+  },
+  "keywords": ["knowledge-management", "bookmarks", "zotero", "instapaper", "classifier", "electron"],
+  "author": "",
+  "license": "MIT",
+  "description": "Routster — An intelligent, local-first desktop app that automatically classifies, routes, and exports bookmarks to Zotero, Instapaper, and more. Features adaptive learning, Chrome sync, and a 4-layer academic paper extraction engine.",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "build": {
+    "appId": "com.routster.app",
+    "productName": "Routster",
+    "directories": {
+      "output": "dist-app"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "server.js",
+      "classifier.js",
+      "fetcher.js",
+      "main.js",
+      "db.js",
+      "export-engine.js",
+      "frontend/dist/**/*",
+      "node_modules/**/*"
+    ]
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "axios": "^1.7.9",
+    "better-sqlite3": "^12.8.0",
+    "body-parser": "^1.20.3",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsdom": "^29.0.1",
+    "multer": "^1.4.5-lts.1",
+    "p-limit": "^7.3.0",
+    "turndown": "^7.2.2"
+  },
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "electron-builder": "^26.4.1"
+  }
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      width: 280px;
+      padding: 16px;
+      background: #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      text-align: center;
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 16px;
+      background: linear-gradient(90deg, #58a6ff, #bc8cff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn {
+      background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      box-shadow: 0 4px 15px rgba(88, 166, 255, 0.4);
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    #status {
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    #queue-count {
+      display: none;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #d29922;
+      background: rgba(210, 153, 34, 0.1);
+      border: 1px solid rgba(210, 153, 34, 0.3);
+      border-radius: 4px;
+      padding: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Routster</h2>
+  <p id="title-display">Loading...</p>
+  <button id="send-btn" class="btn">⚡ Route This Tab</button>
+  <button id="mass-capture-btn" class="btn" style="margin-top: 10px; background: linear-gradient(135deg, #da3633, #f85149);">🌀 Vacuum All Tabs & Close</button>
+  <div id="status"></div>
+  <div id="queue-count"></div>
+  <script src="popup.js"></script>
+</body>
+</html>

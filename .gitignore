@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist-app/
+dist-new/
+
+# Database (user-specific data)
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Environment (NEVER commit - contains API keys!)
+.env
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Logs & temp
+build_log.txt
+uploads/
+routed_bookmarks.json
+
+# Personal launcher scripts
+*.vbs
+*.bat
+
+# Frontend build (rebuilt on install)
+frontend/dist/
+
+# Dev-only files (keep local, don't ship)
+KMS_PROJECT_STATUS.md
+index.js
+router.js
+sample_bookmarks.html

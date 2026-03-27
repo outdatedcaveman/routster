@@ -1,0 +1,307 @@
+/* === FLOW BUILDER STYLES === */
+
+.flows-container {
+  padding: 8px 0;
+}
+
+/* Connectors Grid */
+.connectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.connector-card {
+  background: rgba(22, 27, 34, 0.8);
+  border: 1px solid rgba(88, 166, 255, 0.15);
+  border-radius: 10px;
+  padding: 14px;
+  transition: all 0.2s;
+}
+.connector-card:hover {
+  border-color: rgba(88, 166, 255, 0.4);
+  transform: translateY(-1px);
+}
+.connector-card.configured {
+  border-color: rgba(63, 185, 80, 0.4);
+}
+
+.connector-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.connector-icon { font-size: 20px; }
+.connector-name { font-weight: 600; font-size: 14px; color: #e6edf3; }
+.badge-ok {
+  margin-left: auto;
+  background: rgba(63, 185, 80, 0.2);
+  color: #3fb950;
+  border-radius: 50%;
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+
+.connector-desc {
+  font-size: 11px;
+  color: #8b949e;
+  margin: 4px 0 10px 0;
+  line-height: 1.4;
+}
+
+.btn-sm {
+  background: rgba(88, 166, 255, 0.15);
+  color: #58a6ff;
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+}
+.btn-sm:hover {
+  background: rgba(88, 166, 255, 0.25);
+}
+
+/* Config Modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+.modal-content {
+  background: #161b22;
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 12px;
+  padding: 24px;
+  width: 420px;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-content h3 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #e6edf3;
+}
+
+.config-field {
+  margin-bottom: 14px;
+}
+.config-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #c9d1d9;
+  margin-bottom: 4px;
+}
+.field-hint {
+  display: block;
+  font-size: 11px;
+  color: #6e7681;
+  margin-bottom: 4px;
+}
+.config-field .input-base {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.btn-test {
+  flex: 1;
+  padding: 8px;
+  background: rgba(210, 153, 34, 0.15);
+  color: #d29922;
+  border: 1px solid rgba(210, 153, 34, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.btn-test:hover { background: rgba(210, 153, 34, 0.25); }
+.btn-save {
+  flex: 1;
+  padding: 8px;
+  background: rgba(63, 185, 80, 0.15);
+  color: #3fb950;
+  border: 1px solid rgba(63, 185, 80, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.btn-save:hover { background: rgba(63, 185, 80, 0.25); }
+
+.test-result {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.test-result.success { background: rgba(63,185,80,0.1); color: #3fb950; border: 1px solid rgba(63,185,80,0.3); }
+.test-result.error { background: rgba(248,81,73,0.1); color: #f85149; border: 1px solid rgba(248,81,73,0.3); }
+
+/* Flow Builder */
+.flows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.flow-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(22, 27, 34, 0.6);
+  border: 1px solid rgba(88, 166, 255, 0.1);
+  border-radius: 10px;
+  padding: 12px 16px;
+  transition: border-color 0.2s;
+}
+.flow-row:hover {
+  border-color: rgba(88, 166, 255, 0.3);
+}
+
+.flow-category {
+  min-width: 220px;
+  flex-shrink: 0;
+}
+.flow-cat-label {
+  font-size: 11px;
+  color: #6e7681;
+  display: block;
+  margin-bottom: 2px;
+}
+.flow-category strong {
+  color: #e6edf3;
+  font-size: 14px;
+}
+
+.flow-arrow {
+  color: #58a6ff;
+  font-size: 20px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.flow-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.no-actions {
+  font-size: 12px;
+  color: #484f58;
+  font-style: italic;
+}
+
+.flow-action-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.25);
+  border-radius: 16px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #c9d1d9;
+}
+.chip-delete {
+  background: none;
+  border: none;
+  color: #f85149;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.6;
+}
+.chip-delete:hover { opacity: 1; }
+
+.btn-add-action {
+  background: rgba(63, 185, 80, 0.1);
+  border: 1px dashed rgba(63, 185, 80, 0.4);
+  color: #3fb950;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-add-action:hover {
+  background: rgba(63, 185, 80, 0.2);
+}
+
+.action-picker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  background: #161b22;
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  border-radius: 8px;
+  padding: 6px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 180px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.picker-option {
+  background: none;
+  border: none;
+  color: #c9d1d9;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 6px;
+  transition: background 0.1s;
+}
+.picker-option:hover {
+  background: rgba(88, 166, 255, 0.15);
+}
+
+/* Tab Navigation */
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: rgba(22, 27, 34, 0.6);
+  border-radius: 10px;
+  padding: 4px;
+}
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  color: #8b949e;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: #c9d1d9; }
+.tab-btn.active {
+  background: rgba(88, 166, 255, 0.15);
+  color: #58a6ff;
+}

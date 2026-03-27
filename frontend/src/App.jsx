@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css';
+import './FlowBuilder.css';
+import FlowBuilder from './FlowBuilder';
 
 const API_BASE = 'http://localhost:4000/api';
 
@@ -31,6 +33,7 @@ function App() {
   const [manualLink, setManualLink] = useState('');
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState('');
+  const [activeTab, setActiveTab] = useState('inbox');
   
   // Edit State
   const [editingId, setEditingId] = useState(null);
@@ -219,7 +222,22 @@ function App() {
 
       {toast && <div className="toast">✅ {toast}</div>}
 
-      <div className="glass-panel">
+      <div className="tab-nav">
+        <button className={`tab-btn ${activeTab === 'inbox' ? 'active' : ''}`} onClick={() => setActiveTab('inbox')}>
+          📥 Inbox
+        </button>
+        <button className={`tab-btn ${activeTab === 'flows' ? 'active' : ''}`} onClick={() => setActiveTab('flows')}>
+          ⚡ Flows
+        </button>
+      </div>
+
+      {activeTab === 'flows' && (
+        <div className="glass-panel">
+          <FlowBuilder />
+        </div>
+      )}
+
+      {activeTab === 'inbox' && (<><div className="glass-panel">
         <div className="controls-row">
           <input 
             type="text" 
@@ -382,7 +400,7 @@ function App() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div></>)}
     </div>
   );
 }

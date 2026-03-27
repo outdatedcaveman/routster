@@ -48,6 +48,27 @@ db.exec(`
   )
 `);
 
+// Connector Configurations (user credentials per connector)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS connector_configs (
+    connector_id TEXT PRIMARY KEY,
+    config TEXT DEFAULT '{}',
+    enabled INTEGER DEFAULT 0
+  )
+`);
+
+// Routes (user-defined flows: category → connector actions)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS routes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT NOT NULL,
+    action_order INTEGER DEFAULT 0,
+    connector_id TEXT NOT NULL,
+    connector_config TEXT DEFAULT '{}',
+    enabled INTEGER DEFAULT 1
+  )
+`);
+
 const stmts = {
   insert: db.prepare(`
     INSERT OR REPLACE INTO links (id, category, url, title, description, markdownBody, date_added, source, paperLink)
@@ -140,5 +161,48 @@ module.exports = {
 
   upsertLearnedRule: (domain, category) => {
     stmts.upsertLearnedRule.run({ domain, category });
+  },
+
+  // === Connector Configs ===
+  getConnectorConfig: (connectorId) => {
+    return db.prepare('SELECT * FROM connector_configs WHERE connector_id = ?').get(connectorId);
+  },
+  getAllConnectorConfigs: () => {
+    return db.prepare('SELECT * FROM connector_configs').all();
+  },
+  saveConnectorConfig: (connectorId, config, enabled) => {
+    db.prepare(`
+      INSERT INTO connector_configs (connector_id, config, enabled) VALUES (?, ?, ?)
+      ON CONFLICT(connector_id) DO UPDATE SET config = excluded.config, enabled = excluded.enabled
+    `).run(connectorId, JSON.stringify(config), enabled ? 1 : 0);
+  },
+
+  // === Routes (Flows) ===
+  getRoutes: () => {
+    return db.prepare('SELECT * FROM routes ORDER BY category, action_order').all();
+  },
+  getRoutesForCategory: (category) => {
+    return db.prepare('SELECT * FROM routes WHERE category = ? AND enabled = 1 ORDER BY action_order').all(category);
+  },
+  addRoute: (category, connectorId, connectorConfig = {}, actionOrder = 0) => {
+    return db.prepare(`
+      INSERT INTO routes (category, connector_id, connector_config, action_order) VALUES (?, ?, ?, ?)
+    `).run(category, connectorId, JSON.stringify(connectorConfig), actionOrder);
+  },
+  updateRoute: (id, updates) => {
+    const fields = [];
+    const values = [];
+    if (updates.category !== undefined) { fields.push('category = ?'); values.push(updates.category); }
+    if (updates.connector_id !== undefined) { fields.push('connector_id = ?'); values.push(updates.connector_id); }
+    if (updates.connector_config !== undefined) { fields.push('connector_config = ?'); values.push(JSON.stringify(updates.connector_config)); }
+    if (updates.action_order !== undefined) { fields.push('action_order = ?'); values.push(updates.action_order); }
+    if (updates.enabled !== undefined) { fields.push('enabled = ?'); values.push(updates.enabled ? 1 : 0); }
+    values.push(id);
+    if (fields.length > 0) {
+      db.prepare(`UPDATE routes SET ${fields.join(', ')} WHERE id = ?`).run(...values);
+    }
+  },
+  deleteRoute: (id) => {
+    db.prepare('DELETE FROM routes WHERE id = ?').run(id);
   }
 };

@@ -7,6 +7,7 @@ const cheerio = require('cheerio');
 const { classifyLink, loadLearnedRules, recordCorrection } = require('./classifier');
 const { fetchAndExtractMetadata } = require('./fetcher');
 const db = require('./db');
+const connectorRegistry = require('./connectors');
 
 // Boot the adaptive learning engine from persistent SQLite memory
 loadLearnedRules(db);
@@ -113,6 +114,70 @@ app.post('/api/settings', (req, res) => {
   fs.writeFileSync(ENV_PATH, newEnvContent);
 
   res.json({ success: true, message: 'Settings saved! Integrations are now active.' });
+});
+
+// === CONNECTORS API ===
+// List all available connectors with their config status
+app.get('/api/connectors', (req, res) => {
+  const available = connectorRegistry.getAll();
+  const saved = db.getAllConnectorConfigs();
+  const savedMap = {};
+  saved.forEach(s => { savedMap[s.connector_id] = s; });
+
+  const result = available.map(c => ({
+    ...c,
+    enabled: savedMap[c.connector_id] ? !!savedMap[c.connector_id].enabled : false,
+    configured: savedMap[c.connector_id] ? true : false
+  }));
+  res.json(result);
+});
+
+// Save connector config
+app.post('/api/connectors/:id/config', (req, res) => {
+  const { id } = req.params;
+  const { config, enabled } = req.body;
+  db.saveConnectorConfig(id, config || {}, enabled !== undefined ? enabled : true);
+  res.json({ success: true });
+});
+
+// Test connector credentials
+app.post('/api/connectors/:id/test', async (req, res) => {
+  const { id } = req.params;
+  const { config } = req.body;
+  const result = await connectorRegistry.testConnector(id, config || {});
+  res.json(result);
+});
+
+// === ROUTES (FLOWS) API ===
+// List all routes
+app.get('/api/routes', (req, res) => {
+  const routes = db.getRoutes();
+  res.json(routes.map(r => ({
+    ...r,
+    connector_config: JSON.parse(r.connector_config || '{}')
+  })));
+});
+
+// Create route
+app.post('/api/routes', (req, res) => {
+  const { category, connector_id, connector_config, action_order } = req.body;
+  if (!category || !connector_id) return res.status(400).json({ error: 'category and connector_id required' });
+  const result = db.addRoute(category, connector_id, connector_config || {}, action_order || 0);
+  res.json({ success: true, id: result.lastInsertRowid });
+});
+
+// Update route
+app.put('/api/routes/:id', (req, res) => {
+  const { id } = req.params;
+  db.updateRoute(parseInt(id), req.body);
+  res.json({ success: true });
+});
+
+// Delete route
+app.delete('/api/routes/:id', (req, res) => {
+  const { id } = req.params;
+  db.deleteRoute(parseInt(id));
+  res.json({ success: true });
 });
 
 // 1. EXTENSION INGEST ENDPOINT
@@ -486,19 +551,35 @@ app.post('/api/export', async (req, res) => {
       // Now route based on the (possibly updated) category
       folderCat = outputFolderName(cat);
 
-      if (cat === 'Article/PDF' || cat === 'Book') {
-        // → Zotero (title + URL only, Paperpile will enrich later)
-        await exportToZotero(link);
-        pushed = true;
-      }
-      else if (cat === 'Instapaper/Read Later') {
-        // → Instapaper feed
-        await exportToInstapaper(link, instapaperPassword);
-        pushed = true;
-      }
-      else {
-        // Shopping, Tools, Events, Jobs → just bookmark backup, no external API
-        pushed = true;
+      // === MODULAR ROUTE EXECUTION ===
+      // Look up user-defined routes for this category
+      const routes = db.getRoutesForCategory(cat);
+
+      if (routes.length > 0) {
+        // User has configured custom flows — execute each connector in order
+        for (const route of routes) {
+          // Merge route-level config with saved connector config
+          const savedConfig = db.getConnectorConfig(route.connector_id);
+          const baseConfig = savedConfig ? JSON.parse(savedConfig.config || '{}') : {};
+          const routeConfig = JSON.parse(route.connector_config || '{}');
+          const mergedConfig = { ...baseConfig, ...routeConfig };
+
+          const ok = await connectorRegistry.execute(route.connector_id, link, mergedConfig);
+          if (ok) pushed = true;
+        }
+      } else {
+        // LEGACY FALLBACK: No routes configured — use hardcoded defaults
+        // (This ensures backward compat for existing users who haven't set up flows yet)
+        const { exportToZotero, exportToInstapaper } = require('./export-engine');
+        if (cat === 'Article/PDF' || cat === 'Book') {
+          await exportToZotero(link);
+          pushed = true;
+        } else if (cat === 'Instapaper/Read Later') {
+          await exportToInstapaper(link, instapaperPassword);
+          pushed = true;
+        } else {
+          pushed = true; // Shopping, Tools, Events, Jobs — just bookmark backup
+        }
       }
 
       if (pushed) {

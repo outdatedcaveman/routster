@@ -1,125 +1,199 @@
-# Routster
+# 🚀 Routster
 
-An intelligent, local-first desktop application that automatically classifies, routes, and exports your bookmarks to the right tools — Zotero for papers, Instapaper for long reads, and organized Chrome bookmark folders for everything else.
+**Universal, local-first automation engine for knowledge management.**
 
-![Electron](https://img.shields.io/badge/Electron-34-blue) ![SQLite](https://img.shields.io/badge/SQLite-Local--First-green) ![License](https://img.shields.io/badge/License-MIT-yellow)
+Routster automatically classifies, routes, and exports files, links, and text snippets to any service — Notion, Zotero, Google Drive, Obsidian, and more. It runs entirely on your machine with zero cloud dependencies.
+
+---
 
 ## ✨ Features
 
-- **🧠 Adaptive Smart Classifier** — Automatically categorizes links into Articles, Books, Scientific News, Read Later, Shopping, Tools, Events, and Jobs using 60+ domain heuristics. Learns from your manual corrections and gets smarter over time.
-- **📄 Absolute PDF Detection** — Any URL ending in `.pdf` is instantly routed to your academic pipeline.
-- **🔬 4-Layer Paper Extraction** — For science news pages, the engine deep-scans for DOIs, academic journal links, citation sections, and `.edu` references to find the original paper behind the press release.
-- **📱 Chrome Android Sync** — Save bookmarks to a `KMS Input` folder on your phone. Pull them into the app with one click when you're back at your desk.
-- **🔌 Chrome Extension** — Route individual tabs or vacuum all open tabs with offline queuing (links are saved locally if the app isn't running).
-- **📤 One-Click Export** — Articles/Books → Zotero, Read Later → Instapaper, everything → organized Chrome bookmark folders.
-- **🛑 Panic Stop** — Safely halt massive export operations mid-execution.
-- **⚡ High Performance** — Ingests 10,000+ links in milliseconds using SQLite batch transactions. No RAM exhaustion.
-- **🔒 100% Local** — All data stays on your machine. No cloud accounts required (except for the export services you choose to use).
+| Feature | Description |
+|---------|-------------|
+| 🧠 **NLP Classifier** | Multi-tier classification: file type → filename hints → TF-IDF semantic scoring → adaptive learning |
+| 📥 **Universal Inbox** | Paste URLs, DOIs, drag-and-drop files, or pull from Chrome bookmarks |
+| ⚡ **Flow Builder** | Visual rules: "When category = X → send to Y, Z, W" with ordered action chains |
+| 🔌 **12+ Connectors** | Zotero, Notion, Obsidian, Instapaper, Pocket, Raindrop, Readwise, Webhook, Local Disk, Google Drive, Custom API, Open API & Macros |
+| 🧩 **Custom Connectors** | Build your own REST API connector with URL, headers, and body template variables |
+| 🔓 **Open API** | Inbound webhook for iOS Shortcuts, Python scripts, browser extensions, IFTTT, etc. |
+| 🎨 **Dual Themes** | Beige/Orange light mode and Forest Green dark mode |
+| 🌍 **16 Languages** | English, Spanish, Portuguese, French, German, Chinese, Japanese, Korean, Russian, Arabic, Hindi, Italian, Dutch, Polish, Turkish, Vietnamese |
+| ⚙️ **Settings Panel** | Full GUI configuration — classifier thresholds, API secrets, database management, and more |
+| 📦 **Standalone EXE** | One-click installer for Windows. No terminal, no Docker, no dependencies. |
 
-## 🚀 Quick Start
+---
 
-### Prerequisites
+## 📸 Screenshots
 
-- [Node.js](https://nodejs.org/) v18 or later
-- [Google Chrome](https://www.google.com/chrome/) (for the extension and Android sync)
+| Light Mode | Dark Mode |
+|:----------:|:---------:|
+| Beige/Orange theme | Forest Green theme |
 
-### Installation
+---
+
+## 🛠️ Installation
+
+### Option 1: Download the Installer (Recommended)
+
+1. Go to [Releases](https://github.com/outdatedcaveman/routster/releases)
+2. Download `Routster-Setup-1.2.0.exe`
+3. Run the installer — it's ready to use immediately
+
+### Option 2: Run from Source
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/routster.git
+git clone https://github.com/outdatedcaveman/routster.git
 cd routster
 
-# Install dependencies (automatically installs frontend too)
+# Install dependencies
 npm install
 
 # Build the frontend
 npm run build:frontend
 
-# Copy the environment template and add your credentials
-cp .env.example .env
-# Edit .env with your API keys (see Configuration below)
-
-# Run the app
+# Launch the app
 npm start
 ```
 
-### Build a Standalone `.exe`
+### Option 3: Build Your Own EXE
 
 ```bash
 npm run build:exe
 ```
 
-The installer will be generated in the `dist-app/` folder.
+The installer will appear in `dist-app/`.
 
-## ⚙️ Configuration
+---
 
-All credentials are stored in a local `.env` file (never committed to Git). You can also configure them through the app's built-in Settings panel.
+## 🚀 Quick Start
 
-| Service | Required? | How to Get Credentials |
-| --- | --- | --- |
-| **Zotero** | Recommended | [Create API key](https://www.zotero.org/settings/keys) — enable write access |
-| **Instapaper** | Optional | Your Instapaper email/password |
-| **Notion** | Optional | [Create integration](https://www.notion.so/my-integrations) |
-| **Obsidian** | Optional | Path to your vault's Inbox folder |
-| **Paperpile** | Optional | Path to your Google Drive Paperpile sync folder |
+1. **Launch Routster** — the onboarding wizard guides you through setup
+2. **Define Categories** — e.g. "Research Papers", "Podcasts", "Work Invoices"
+3. **Configure Connectors** — set up Zotero, Notion, Google Drive, or any custom API
+4. **Build Flows** — assign actions to each category ("When Research Paper → Zotero + Google Drive")
+5. **Ingest Content** — paste URLs, drop files, or send data via the webhook API
+6. **Watch it work** — Routster classifies and routes everything automatically
 
-## 📱 Chrome Extension Setup
+---
 
-1. Open `chrome://extensions` in Google Chrome
-2. Enable **Developer mode** (top-right toggle)
-3. Click **Load unpacked**
-4. Select the `extension/` folder from this repository
-5. The Routster icon will appear in your toolbar
+## 🔌 Connector Reference
 
-### Offline Resilience
+| Connector | Type | Description |
+|-----------|------|-------------|
+| Zotero | Export | Academic reference manager |
+| Instapaper | Export | Read-it-later for articles |
+| Notion | Export | Save to a Notion database |
+| Obsidian | Export | Save as Markdown in your vault |
+| Pocket | Export | Mozilla's read-it-later |
+| Raindrop.io | Export | Visual bookmark manager |
+| Readwise | Export | Highlights & reading tracker |
+| Webhook | Export | Send to any URL via HTTP POST |
+| Local Disk | Export | Copy/move files to local folders |
+| Google Drive | Export | Sync to Drive via Desktop app |
+| Custom API | Export | Build your own REST API connector |
+| Open API & Macros | System | Configure inbound webhook + macros |
 
-If you capture links while the desktop app isn't running, they're stored in the extension's local storage and automatically synced when the app comes back online.
+---
 
-## 📲 Android Chrome Workflow
+## 📡 API Usage
 
-1. On your Android phone, create a bookmark folder called exactly **`KMS Input`**
-2. Save any tabs you want to process into this folder
-3. On your desktop, open Chrome (bookmarks sync automatically)
-4. In the Routster app, click **🔄 Pull 'KMS Input' from Mobile Chrome**
-5. Your links appear instantly, classified and ready for export
+Routster exposes an inbound webhook for programmatic ingestion:
 
-## 🗂️ Export Pipeline
+```bash
+# Send a URL
+curl -X POST http://localhost:4000/api/open/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://arxiv.org/abs/2301.00001","title":"Cool Paper"}'
 
-| Category | Export Target | KMS Output Folder |
-| --- | --- | --- |
-| Article/PDF | Zotero | `Articles` |
-| Book | Zotero | `Books` |
-| Scientific News | Zotero (after paper extraction) | `Articles` |
-| Read Later | Instapaper | `Read It Later` |
-| Shopping | Bookmark backup | `Shopping` |
-| Tool/App/Service | Bookmark backup | `Tools` |
-| Event/Theater | Bookmark backup | `Events` |
-| Job Listing | Bookmark backup | `Opportunities` |
+# Send raw text
+curl -X POST http://localhost:4000/api/open/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"type":"text","textContent":"Meeting notes from today..."}'
+```
 
-## 🧠 Adaptive Learning
+Set an API secret in **Settings → API & Webhooks** to protect your endpoint.
 
-Every time you manually correct a link's category, the system remembers. After 2 corrections from the same domain, future links from that domain are automatically routed to your preferred category — permanently, across reboots.
+---
+
+## 🧩 Extending Routster
+
+### Custom Connectors (via GUI)
+Use the **Custom API Connector** in the Flows tab to point to any REST endpoint with variable interpolation (`{title}`, `{url}`, `{category}`, `{description}`, `{timestamp}`).
+
+### Plugin Connectors (via Code)
+Drop a `.js` file into `connectors/` with this structure:
+
+```javascript
+module.exports = {
+  id: 'my_plugin',
+  name: 'My Plugin',
+  icon: '🔌',
+  description: 'My custom connector',
+  configFields: [
+    { key: 'api_key', label: 'API Key', required: true, type: 'password' }
+  ],
+  test: async (config) => ({ success: true, message: 'OK' }),
+  execute: async (entity, config) => {
+    // entity has: title, url, category, description, type, filePath
+    // Return: { success: true }
+  }
+};
+```
+
+### Trigger Plugins
+Drop a `.js` file into `triggers/` with:
+
+```javascript
+module.exports = {
+  id: 'my_trigger',
+  name: 'My Trigger',
+  poll: async () => {
+    // Return array of items to ingest
+    return [{ url: '...', title: '...', type: 'url' }];
+  }
+};
+```
+
+---
 
 ## 🏗️ Architecture
 
-```text
-┌──────────────────┐     ┌───────────────┐     ┌──────────────┐
-│ Chrome Extension │────▶│               │     │   Zotero     │
-│ (Desktop/Mobile) │     │   Routster    │────▶│   Instapaper │
-│                  │◀────│  (localhost)  │     │   Notion     │
-└──────────────────┘     │               │     └──────────────┘
-                         │  SQLite + AI  │
-┌──────────────────┐     │  Classifier   │     ┌──────────────┐
-│  HTML Bookmark   │────▶│               │────▶│ KMS Output   │
-│  File Upload     │     └───────────────┘     │ (Bookmarks)  │
-└──────────────────┘                           └──────────────┘
+```
+┌─────────────────────────────────────────────────┐
+│                  Electron App                    │
+├─────────────┬───────────────────────────────────┤
+│  React UI   │      Express Server (port 4000)    │
+│  (Vite)     │                                     │
+│             │  ┌──────────┐  ┌──────────────┐   │
+│  Inbox      │  │ Classifier│→│ Route Engine  │   │
+│  FlowBuilder│  │ (NLP)    │  │ (Connectors) │   │
+│  Settings   │  └──────────┘  └──────────────┘   │
+│             │        ↕                            │
+│             │  ┌──────────────┐                  │
+│             │  │ SQLite (WAL) │                  │
+│             │  └──────────────┘                  │
+└─────────────┴───────────────────────────────────┘
 ```
 
-## 📄 License
-
-MIT — use it, fork it, make it yours.
+---
 
 ## 🤝 Contributing
 
-Pull requests welcome! If you add new domain heuristics to the classifier or new export integrations, please include test cases.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -am 'Add my feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
+
+---
+
+## 📜 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with [Electron](https://electronjs.org/), [Express](https://expressjs.com/), [React](https://react.dev/), [Vite](https://vite.dev/), and [better-sqlite3](https://github.com/WiseLibs/better-sqlite3).

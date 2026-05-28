@@ -20,16 +20,36 @@ module.exports = {
   },
 
   execute: async (link, config) => {
-    await axios.post('https://api.notion.com/v1/pages', {
+    const properties = {
+      "Name": { title: [{ text: { content: (link.title || 'Untitled').substring(0, 2000) } }] },
+      "Category": { select: { name: (link.category || 'Uncategorized').substring(0, 100) } }
+    };
+
+    if (link.url) {
+      properties["URL"] = { url: link.url };
+    }
+
+    const payload = {
       parent: { database_id: config.databaseId },
-      properties: {
-        "Name": { title: [{ text: { content: link.title || 'Untitled' } }] },
-        "URL": { url: link.url },
-        "Category": { select: { name: link.category || 'Uncategorized' } }
-      }
-    }, {
+      properties: properties
+    };
+
+    // If it's a text note or has a description, add it to the page contents
+    const bodyText = link.markdownBody || link.description || (link.type === 'file' ? `Target File: ${link.filePath}` : '');
+    if (bodyText) {
+      // Notion API limits blocks to 2000 chars. To keep it simple, we truncate the first block.
+      payload.children = [
+        {
+          object: 'block',
+          type: 'paragraph',
+          paragraph: { rich_text: [{ type: 'text', text: { content: bodyText.substring(0, 2000) } }] }
+        }
+      ];
+    }
+
+    await axios.post('https://api.notion.com/v1/pages', payload, {
       headers: { 'Authorization': `Bearer ${config.apiKey}`, 'Notion-Version': '2022-06-28' }
     });
-    console.log(`[Notion] Inserted: ${link.title}`);
+    console.log(`[Notion] Inserted: ${link.title} (Type: ${link.type || 'url'})`);
   }
 };

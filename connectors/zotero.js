@@ -21,9 +21,22 @@ module.exports = {
   },
 
   execute: async (link, config) => {
-    const apiKey = config.apiKey;
-    const userId = config.userId;
-    const collectionName = config.collection || 'Routster Inbox';
+    // If the academic_extractor ran before us and found no paper, skip — don't pollute
+    // Zotero with raw science news URLs. The item stays in the pipeline for other actions.
+    if (link._paperFound === false) {
+      console.log(`[Zotero] Skipping "${link.title}" — no academic paper was found by extractor.`);
+      return false;
+    }
+
+    const apiKey = config.apiKey || process.env.ZOTERO_API_KEY;
+    const userId = config.userId || process.env.ZOTERO_USER_ID;
+    const collectionName = config.collection || process.env.ZOTERO_COLLECTION || 'Routster Inbox';
+
+
+    if (!apiKey || !userId) {
+      console.log('[Zotero] No credentials found (checked config + .env). Skipping.');
+      return false;
+    }
 
     // Get or create collection
     let collectionKey = null;

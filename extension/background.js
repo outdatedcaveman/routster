@@ -85,7 +85,13 @@ async function executeBookmarkMoves(pendingItems) {
     for (const item of pendingItems) {
         let categoryFolderId = await getOrCreateFolder(item.category, outputFolderId);
 
-        const matchingNode = allInputNodes.find(n => n.url === item.url);
+        const matchingNode = allInputNodes.find(n => 
+            n.url === item.url || 
+            (item.originalUrl && n.url === item.originalUrl) ||
+            n.url.replace(/\/$/, '') === item.url.replace(/\/$/, '') ||
+            (item.originalUrl && n.url.replace(/\/$/, '') === item.originalUrl.replace(/\/$/, ''))
+        );
+
         
         if (matchingNode) {
             // From Chrome Android: Move out of KMS Input into KMS Output

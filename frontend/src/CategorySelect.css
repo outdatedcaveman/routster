@@ -1,0 +1,135 @@
+/* CategorySelect — fully custom dropdown, no native <select> */
+
+.cselect-wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 160px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+}
+
+/* Trigger button */
+.cselect-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  font-weight: 500;
+  font-size: 0.875rem;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cselect-trigger:hover {
+  border-color: #9ca3af;
+}
+.cselect-trigger.open {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.cselect-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cselect-arrow {
+  font-size: 0.6rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Dropdown list */
+.cselect-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  max-height: 260px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/* Options */
+.cselect-option {
+  padding: 9px 14px;
+  cursor: pointer;
+  color: #111827;
+  background: #ffffff;
+  font-size: 0.875rem;
+  transition: background 0.12s;
+  user-select: none;
+}
+.cselect-option:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+.cselect-option.selected {
+  background: #ecfdf5;
+  color: #065f46;
+  font-weight: 600;
+}
+
+/* ── DARK THEME ─────────────────────────────────────── */
+:root.theme-dark .cselect-trigger {
+  background: #1a2e24;
+  color: #f3f4f6;
+  border-color: rgba(52, 211, 153, 0.25);
+}
+:root.theme-dark .cselect-trigger:hover {
+  border-color: rgba(52, 211, 153, 0.5);
+}
+:root.theme-dark .cselect-trigger.open {
+  border-color: #34d399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
+}
+
+:root.theme-dark .cselect-list {
+  background: #1a2e24;
+  border-color: rgba(52, 211, 153, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+:root.theme-dark .cselect-option {
+  color: #f3f4f6;
+  background: #1a2e24;
+}
+:root.theme-dark .cselect-option:hover {
+  background: #223b2c;
+  color: #f9fafb;
+}
+:root.theme-dark .cselect-option.selected {
+  background: #14532d;
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+/* Full-width variant used in filter bar */
+.cselect-wrapper.full-width {
+  width: 100%;
+  min-width: 200px;
+}
+
+/* Compact variant for mass-category toolbar */
+.cselect-wrapper.toolbar {
+  min-width: 180px;
+}

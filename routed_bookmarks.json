@@ -1,0 +1,92 @@
+{
+  "Article/PDF": [
+    {
+      "category": "Article/PDF",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "title": "Attention Is All You Need",
+      "description": "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-to-German translation task, improving over the existing best results, including ensembles by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.",
+      "date_added": "1612345678",
+      "fetch_success": true
+    }
+  ],
+  "GitHub Repo": [
+    {
+      "category": "GitHub Repo",
+      "url": "https://github.com/microsoft/playwright",
+      "title": "GitHub - microsoft/playwright: Playwright is a framework for Web Testing and Automation. It allows testing Chromium, Firefox and WebKit with a single API.",
+      "description": "Playwright is a framework for Web Testing and Automation. It allows testing Chromium, Firefox and WebKit with a single API.  - microsoft/playwright",
+      "date_added": "1612345678",
+      "fetch_success": true
+    }
+  ],
+  "Shopping": [
+    {
+      "category": "Shopping",
+      "url": "https://www.amazon.com/Sony-Noise-Cancelling-Bluetooth-Microphone/dp/B09T85J7Q1/",
+      "title": "Amazon.com",
+      "description": "",
+      "date_added": "1612345678",
+      "fetch_success": true
+    }
+  ],
+  "Instapaper/Read Later": [
+    {
+      "category": "Instapaper/Read Later",
+      "url": "https://slatestarcodex.com/2014/07/30/meditations-on-moloch/",
+      "title": "Meditations On Moloch",
+      "description": "I. Allen Ginsberg’s famous poem on Moloch:What sphinx of cement and aluminum bashed open their skulls and ate up their brains and imagination? Moloch! Solitude! Filth! Ugliness! Ashcans and u…",
+      "date_added": "1612345678",
+      "fetch_success": true
+    }
+  ],
+  "Quanta": [
+    {
+      "category": "Quanta",
+      "url": "https://www.quantamagazine.org/how-the-brain-links-events-in-time-20231010/",
+      "title": "How the Brain Links Events in Time | Quanta Magazine",
+      "description": "",
+      "date_added": "1612345678",
+      "fetch_success": false
+    }
+  ],
+  "Reference Portal/Academic Profile": [
+    {
+      "category": "Reference Portal/Academic Profile",
+      "url": "https://scholar.google.com/citations?user=JicYPdAAAAAJ&hl=en",
+      "title": "Geoffrey Hinton",
+      "description": "‪Emeritus Prof. Computer Science, University of Toronto‬ - ‪‪Cited by 1,020,394‬‬ - ‪machine learning‬ - ‪psychology‬ - ‪artificial intelligence‬ - ‪cognitive science‬ - ‪computer science‬",
+      "date_added": "1612345678",
+      "fetch_success": true
+    }
+  ],
+  "Event/Theater": [
+    {
+      "category": "Event/Theater",
+      "url": "https://www.eventbrite.com/e/tech-summit-2024-tickets-123456",
+      "title": "Tech Summit 2024 Tickets",
+      "description": "",
+      "date_added": "1612345678",
+      "fetch_success": false
+    }
+  ],
+  "Book": [
+    {
+      "category": "Book",
+      "url": "https://www.goodreads.com/book/show/13496.A_Game_of_Thrones",
+      "title": "A Game of Thrones (A Song of Ice and Fire, #1)",
+      "description": "Long ago, in a time forgotten, a preternatural event th…",
+      "date_added": "1612345678",
+      "fetch_success": true
+    }
+  ],
+  "Job Listing": [
+    {
+      "category": "Job Listing",
+      "url": "https://boards.greenhouse.io/openai/jobs/123456",
+      "title": "Software Engineer at OpenAI",
+      "description": "",
+      "date_added": "1612345678",
+      "fetch_success": false
+    }
+  ]
+}

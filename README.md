@@ -35,11 +35,11 @@ Routster automatically classifies, routes, and exports files, links, and text sn
 
 ## 🛠️ Installation
 
-### Option 1: Download the Installer (Recommended)
+### Option 1: Download the App (Recommended)
 
 1. Go to [Releases](https://github.com/outdatedcaveman/routster/releases)
-2. Download `Routster-Setup-1.2.0.exe`
-3. Run the installer — it's ready to use immediately
+2. Download `Routster-1.2.0-portable.exe`
+3. Double-click it — it's portable, no installation needed
 
 ### Option 2: Run from Source
 

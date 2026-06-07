@@ -25,9 +25,11 @@ Routster automatically classifies, routes, and exports files, links, and text sn
 
 ## 📸 Screenshots
 
-| Light Mode | Dark Mode |
-|:----------:|:---------:|
-| Beige/Orange theme | Forest Green theme |
+<p align="center">
+  <img src="assets/screenshots/onboarding.png" alt="Routster onboarding" width="640">
+</p>
+
+<p align="center"><em>The onboarding wizard. Routster ships in a Beige/Orange light theme and a Forest Green dark theme.</em></p>
 
 ---
 

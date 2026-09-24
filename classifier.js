@@ -3,6 +3,32 @@
  * Multi-tier classifier: Adaptive Learning → File Type Matching → NLP Semantic Scoring
  */
 
+const { execSync } = require('child_process');
+const _fs = require('fs'), _os = require('os'), _path = require('path');
+
+// MASTER ENGINE (2026-06-15): all four surfaces (Inbox/Panop,
+// Navigation/Routster) share ONE classifier — egon's lib/classifier (domain
+// tiers + hard gates + bookmark-trained kNN), exposed at POST /api/v1/classify.
+// Routster calls it FIRST so a link is never categorised two different ways.
+// Synchronous (keeps classifyLink sync; no ripple to its 13 call sites), with a
+// safe fallback to the local logic below when egon's server (:8000) is down.
+function classifyViaMaster(url, title) {
+  try {
+    const tmp = _path.join(_os.tmpdir(), 'routster_clf.json');
+    _fs.writeFileSync(tmp, JSON.stringify({ url: url || '', title: title || '' }));
+    const out = execSync(
+      'curl -s -m 5 -X POST http://127.0.0.1:8000/api/v1/classify ' +
+      '-H "Content-Type: application/json" --data-binary @"' + tmp + '"',
+      { timeout: 7000, windowsHide: true }
+    ).toString();
+    const r = JSON.parse(out);
+    if (r && r.status === 'ok' && r.action === 'match' && r.category && r.category !== 'reject') {
+      return r.category;
+    }
+  } catch (e) { /* server down -> fall back to local */ }
+  return null;
+}
+
 let learnedRules = {}; // { domain: { category: count } }
 
 function loadLearnedRules(dbModule) {
@@ -111,10 +137,15 @@ function isCategoryCompatible(categoryRules, detectedType, ext) {
 }
 
 function classifyLink(url, title = "", description = "") {
+  // MASTER ENGINE FIRST — the one brain shared by all surfaces. Returns before
+  // touching anything else, so it works even if local deps are unavailable.
+  const _master = classifyViaMaster(url, title);
+  if (_master) return _master;
+
   const db = require('./db');
   const lowerUrl = url.toLowerCase();
   const domain = extractDomain(url);
-  
+
   // Extract extension from URL first, then fall back to title (which is the filename for uploads)
   let ext = '';
   try {
